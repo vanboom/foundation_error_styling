@@ -26,7 +26,7 @@ module FoundationErrorStyling
           html_field = Nokogiri::HTML::DocumentFragment.parse(html_tag)
           html_field.children.add_class 'error'
 
-          html_tag.add_child("<small class='error'>".html_safe+instance_tag.error_message.first+"</small>")
+          html_field.add_child("<small class='error'>".html_safe+instance_tag.error_message.first+"</small>")
           html_tag = html_field.to_s
         end
         html_tag.html_safe
