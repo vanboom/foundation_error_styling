@@ -19,14 +19,17 @@ module FoundationErrorStyling
           html_tag.insert(class_attribute + 7, "error ")
           html_tag = html_tag + "<small class='error'>".html_safe+instance_tag.error_message.first+"</small>".html_safe
         elsif html_tag =~ /<label/
-          first_whitespace = html_tag =~ /\s/
-          html_tag[first_whitespace] = " class='error' "
+          html_field = Nokogiri::HTML::DocumentFragment.parse(html_tag)
+          html_field.children.add_class 'error'
+          html_tag = html_field.to_s
         elsif html_tag =~ /<(input|textarea|select|label|)/
-          first_whitespace = html_tag =~ /\s/
-          html_tag[first_whitespace] = " class='error' "
-          html_tag = html_tag + "<small class='error'>".html_safe+instance_tag.error_message.first+"</small>".html_safe
+          html_field = Nokogiri::HTML::DocumentFragment.parse(html_tag)
+          html_field.children.add_class 'error'
+
+          html_tag.add_child("<small class='error'>".html_safe+instance_tag.error_message.first+"</small>")
+          html_tag = html_field.to_s
         end
-        html_tag
+        html_tag.html_safe
       end
     end
   end
