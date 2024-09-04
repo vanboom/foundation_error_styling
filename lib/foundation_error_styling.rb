@@ -17,7 +17,7 @@ module FoundationErrorStyling
         if html_tag =~ /<(input|textarea|select|div)[^>]+class=/
           class_attribute = html_tag =~ /class=['"]/
           html_tag.insert(class_attribute + 7, "error ")
-          html_tag = html_tag + "<small class='error'>" + instance_tag.error_message.first + "</small>"
+          html_tag = html_tag + ("<small class='error'>" + instance_tag.error_message.first + "</small>").html_safe
         elsif html_tag =~ /<label/
           html_field = Nokogiri::HTML::DocumentFragment.parse(html_tag)
           html_field.children.add_class 'error'
@@ -25,7 +25,6 @@ module FoundationErrorStyling
         elsif html_tag =~ /<(input|textarea|select|label|)/
           html_field = Nokogiri::HTML::DocumentFragment.parse(html_tag)
           html_field.children.add_class 'error'
-
           html_field.add_child("<small class='error'>" + instance_tag.error_message.first + "</small>")
           html_tag = html_field.to_s
         end
